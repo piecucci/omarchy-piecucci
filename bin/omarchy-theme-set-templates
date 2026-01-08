@@ -13,15 +13,40 @@ hex_to_rgb() {
 
 # Only generate dynamic templates for themes with a colors.toml definition
 if [[ -f $COLORS_FILE ]]; then
-  # Parse TOML using yq (treating it as YAML since the flat key=value structure is compatible)
-  # We convert 'key = value' to 'key: value' to make it valid YAML, then use yq/jq to generate the replacement commands.
   sed_script=$(mktemp)
 
-  # Generate standard and _strip substitutions
-  sed 's/=/:/' "$COLORS_FILE" | yq -r 'to_entries[] | "s|{{ \(.key) }}|\(.value)|g", "s|{{ \(.key)_strip }}|\(.value | sub("^#";""))|g"' > "$sed_script"
+  # Try yq first, fall back to pure bash if it fails
+  if command -v yq &>/dev/null; then
+    # Parse TOML using yq (treating it as YAML since the flat key=value structure is compatible)
+    sed 's/ *= */: /' "$COLORS_FILE" | yq -r 'to_entries[] | "s|{{ \(.key) }}|\(.value)|g", "s|{{ \(.key)_strip }}|\(.value | sub(\"^#\";\"\"))|g"' > "$sed_script" 2>/dev/null
+  fi
+
+  # If yq failed or isn't available, use pure bash parsing
+  if [[ ! -s $sed_script ]]; then
+    while IFS='=' read -r key value || [[ -n "$key" ]]; do
+      # Skip empty lines and comments
+      [[ -z "$key" || "$key" =~ ^[[:space:]]*# ]] && continue
+      
+      key=$(echo "$key" | xargs)
+      value=$(echo "$value" | xargs | tr -d '"')
+      
+      # Skip if key or value is empty
+      [[ -z "$key" || -z "$value" ]] && continue
+      
+      # Regular substitution
+      echo "s|{{ ${key} }}|${value}|g" >> "$sed_script"
+      
+      # Strip # from hex colors for _strip variant
+      if [[ $value =~ ^# ]]; then
+        stripped="${value#\#}"
+        echo "s|{{ ${key}_strip }}|${stripped}|g" >> "$sed_script"
+      fi
+    done < "$COLORS_FILE"
+  fi
 
   # Generate _rgb substitutions for hex colors
-  while IFS='=' read -r key value; do
+  while IFS='=' read -r key value || [[ -n "$key" ]]; do
+    [[ -z "$key" || "$key" =~ ^[[:space:]]*# ]] && continue
     key=$(echo "$key" | xargs)
     value=$(echo "$value" | xargs | tr -d '"')
     if [[ $value =~ ^# ]]; then

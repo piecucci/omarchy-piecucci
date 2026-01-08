@@ -19,7 +19,8 @@ fi
 walker -q
 
 focused=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true).name')
-terminal=$(xdg-terminal-exec --print-id)
+# Force Alacritty for screensaver (more stable than ghostty)
+terminal="Alacritty"
 
 for m in $(hyprctl monitors -j | jq -r '.[] | .name'); do
   hyprctl dispatch focusmonitor $m

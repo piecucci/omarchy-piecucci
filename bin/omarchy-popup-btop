@@ -1,0 +1,16 @@
+#!/bin/bash
+# Omarchy System Panel - Right Aligned with Toggle
+
+# Use ps to find if ghostty is running with our specific class
+if ps aux | grep -v grep | grep "omarchy-syspanel" > /dev/null; then
+    pkill -f "omarchy-syspanel"
+    exit 0
+fi
+
+PANEL_WIDTH=900
+PANEL_HEIGHT=1000
+MARGIN=20
+BAR_HEIGHT=40
+POS_X=$((1920 - PANEL_WIDTH - MARGIN))
+
+hyprctl dispatch exec "[float;move $POS_X $BAR_HEIGHT;size $PANEL_WIDTH $PANEL_HEIGHT;pin] ghostty --class=omarchy-syspanel -e btop"

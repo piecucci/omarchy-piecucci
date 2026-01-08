@@ -1,0 +1,7 @@
+#!/bin/bash
+# Convenient command to edit and apply funnel changes
+xdg-open "$HOME/.config/tailscale/funnel-config.sh"
+echo "Follow these steps:"
+echo "1. Edit the file that just opened."
+echo "2. Save and Close the file."
+echo "3. Run 'omarchy-funnel-apply' to make the changes live."
