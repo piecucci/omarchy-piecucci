@@ -10,4 +10,4 @@ if [[ ! -v BASH_COMPLETION_VERSINFO && -f /usr/share/bash-completion/bash_comple
 fi
 
 # Ensure command hashing is off for mise
-set +h
+# set +h
