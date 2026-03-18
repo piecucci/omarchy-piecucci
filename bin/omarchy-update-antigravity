@@ -7,7 +7,6 @@ set -e
 DOWNLOAD_DIR="$HOME/Downloads/Antigravity"
 TAR_FILE="$HOME/Downloads/Antigravity.tar.gz"
 INSTALL_DIR="$HOME/.local/share/antigravity"
-APP_DIR="$INSTALL_DIR/Antigravity"
 BIN_SYMLINK="$HOME/.local/bin/antigravity"
 DESKTOP_ENTRY="$HOME/.local/share/applications/antigravity.desktop"
 ICON_PATH="$HOME/.local/share/icons/antigravity.png"
@@ -56,7 +55,7 @@ get_latest_version() {
 if [[ "$AUTO_DOWNLOAD" == "true" ]]; then
     echo "Checking for latest Antigravity version..."
     
-    OLD_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$APP_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4) || OLD_VERSION="none"
+    OLD_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$INSTALL_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4) || OLD_VERSION="none"
     
     echo "Installed version: v${OLD_VERSION:-unknown}"
     
@@ -102,7 +101,7 @@ if [[ ! -d "$DOWNLOAD_DIR" ]] || [[ ! -f "$DOWNLOAD_DIR/antigravity" ]]; then
     exit 1
 fi
 
-OLD_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$APP_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4)
+OLD_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$INSTALL_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4)
 NEW_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$DOWNLOAD_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4)
 
 echo "Installed: v${OLD_VERSION:-unknown}"
@@ -117,21 +116,21 @@ fi
 
 echo "Updating Antigravity to v$NEW_VERSION..."
 
-mkdir -p "$(dirname "$APP_DIR")"
+mkdir -p "$(dirname "$INSTALL_DIR")"
 mkdir -p "$(dirname "$BIN_SYMLINK")"
 mkdir -p "$(dirname "$ICON_PATH")"
 mkdir -p "$(dirname "$DESKTOP_ENTRY")"
 
-[[ -d "$APP_DIR" ]] && rm -rf "$APP_DIR"
+[[ -d "$INSTALL_DIR" ]] && rm -rf "$INSTALL_DIR"
 if ! cp -r "$DOWNLOAD_DIR"/* "$INSTALL_DIR"/; then
     echo "Error: Copying files failed"
     exit 1
 fi
-chmod +x "$APP_DIR/antigravity"
+chmod +x "$INSTALL_DIR/antigravity"
 
-if [[ ! -L "$BIN_SYMLINK" ]] || [[ "$(readlink "$BIN_SYMLINK")" != "$APP_DIR/antigravity" ]]; then
-    ln -sf "$APP_DIR/antigravity" "$BIN_SYMLINK"
-    echo "Symlink updated: $BIN_SYMLINK -> $APP_DIR/antigravity"
+if [[ ! -L "$BIN_SYMLINK" ]] || [[ "$(readlink "$BIN_SYMLINK")" != "$INSTALL_DIR/antigravity" ]]; then
+    ln -sf "$INSTALL_DIR/antigravity" "$BIN_SYMLINK"
+    echo "Symlink updated: $BIN_SYMLINK -> $INSTALL_DIR/antigravity"
 fi
 
 if [[ ! -f "$ICON_PATH" ]]; then
@@ -142,12 +141,12 @@ if [[ ! -f "$ICON_PATH" ]]; then
     fi
 fi
 
-if [[ ! -f "$DESKTOP_ENTRY" ]] || [[ "$(cat "$DESKTOP_ENTRY" 2>/dev/null)" != *"$APP_DIR/antigravity"* ]]; then
+if [[ ! -f "$DESKTOP_ENTRY" ]] || [[ "$(cat "$DESKTOP_ENTRY" 2>/dev/null)" != *"$INSTALL_DIR/antigravity"* ]]; then
     cat > "$DESKTOP_ENTRY" << EOF
 [Desktop Entry]
 Name=Antigravity
 Comment=AI-powered IDE
-Exec=$APP_DIR/antigravity
+Exec=$INSTALL_DIR/antigravity
 Icon=$ICON_PATH
 Terminal=false
 Type=Application
