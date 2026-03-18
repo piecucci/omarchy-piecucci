@@ -1,6 +1,8 @@
 #!/bin/bash
-# Update Antigravity from Downloads folder
+# Update Antigravity from Downloads folder or download automatically
 # Omarchy-specific version
+
+set -e
 
 DOWNLOAD_DIR="$HOME/Downloads/Antigravity"
 TAR_FILE="$HOME/Downloads/Antigravity.tar.gz"
@@ -9,6 +11,79 @@ APP_DIR="$INSTALL_DIR/Antigravity"
 BIN_SYMLINK="$HOME/.local/bin/antigravity"
 DESKTOP_ENTRY="$HOME/.local/share/applications/antigravity.desktop"
 ICON_PATH="$HOME/.local/share/icons/antigravity.png"
+
+AUTO_DOWNLOAD=false
+
+usage() {
+    echo "Usage: $0 [--download|-d]"
+    echo "  --download, -d  Download latest version automatically"
+    exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --download|-d)
+            AUTO_DOWNLOAD=true
+            shift
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            echo "Unknown option: $1"
+            usage
+            ;;
+    esac
+done
+
+get_latest_version() {
+    local page_content
+    page_content=$(curl -sL "https://r.jina.ai/http://antigravity.google/download/linux" 2>/dev/null) || return 1
+    
+    local download_url
+    download_url=$(echo "$page_content" | grep -oP 'https://edgedl\.me\.gvt1\.com/edgedl/release2/[^ ]*Antigravity\.tar\.gz' | head -1)
+    
+    if [[ -z "$download_url" ]]; then
+        return 1
+    fi
+    
+    local version
+    version=$(echo "$download_url" | grep -oP 'stable/\K[0-9.]+(?=-[0-9]+/linux-x64)')
+    
+    echo "$version|$download_url"
+}
+
+if [[ "$AUTO_DOWNLOAD" == "true" ]]; then
+    echo "Checking for latest Antigravity version..."
+    
+    OLD_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$APP_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4) || OLD_VERSION="none"
+    
+    echo "Installed version: v${OLD_VERSION:-unknown}"
+    
+    result=$(get_latest_version) || {
+        echo "Error: Could not fetch latest version info"
+        exit 1
+    }
+    
+    NEW_VERSION=$(echo "$result" | cut -d'|' -f1)
+    DOWNLOAD_URL=$(echo "$result" | cut -d'|' -f2)
+    
+    echo "Latest version: v$NEW_VERSION"
+    
+    if [[ "$OLD_VERSION" == "$NEW_VERSION" ]]; then
+        echo "Already up to date!"
+        exit 0
+    fi
+    
+    echo "Downloading Antigravity v$NEW_VERSION..."
+    rm -f "$TAR_FILE"
+    if ! curl -L --progress-bar "$DOWNLOAD_URL" -o "$TAR_FILE"; then
+        echo "Error: Download failed"
+        rm -f "$TAR_FILE"
+        exit 1
+    fi
+    echo "Download complete"
+fi
 
 if [[ -f "$TAR_FILE" ]]; then
     echo "Found Antigravity.tar.gz, extracting..."
@@ -23,6 +98,7 @@ fi
 if [[ ! -d "$DOWNLOAD_DIR" ]] || [[ ! -f "$DOWNLOAD_DIR/antigravity" ]]; then
     echo "No new version found in $DOWNLOAD_DIR"
     echo "Please download Antigravity.tar.gz to ~/Downloads first"
+    echo "Or run: $0 --download"
     exit 1
 fi
 
