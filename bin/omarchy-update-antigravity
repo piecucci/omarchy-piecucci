@@ -1,0 +1,88 @@
+#!/bin/bash
+# Update Antigravity from Downloads folder
+# Omarchy-specific version
+
+DOWNLOAD_DIR="$HOME/Downloads/Antigravity"
+TAR_FILE="$HOME/Downloads/Antigravity.tar.gz"
+INSTALL_DIR="$HOME/.local/share/antigravity"
+APP_DIR="$INSTALL_DIR/Antigravity"
+BIN_SYMLINK="$HOME/.local/bin/antigravity"
+DESKTOP_ENTRY="$HOME/.local/share/applications/antigravity.desktop"
+ICON_PATH="$HOME/.local/share/icons/antigravity.png"
+
+if [[ -f "$TAR_FILE" ]]; then
+    echo "Found Antigravity.tar.gz, extracting..."
+    [[ -d "$DOWNLOAD_DIR" ]] && rm -rf "$DOWNLOAD_DIR"
+    if ! tar -xzf "$TAR_FILE" -C "$HOME/Downloads/"; then
+        echo "Error: Extraction failed"
+        exit 1
+    fi
+    echo "Extracted to $DOWNLOAD_DIR"
+fi
+
+if [[ ! -d "$DOWNLOAD_DIR" ]] || [[ ! -f "$DOWNLOAD_DIR/antigravity" ]]; then
+    echo "No new version found in $DOWNLOAD_DIR"
+    echo "Please download Antigravity.tar.gz to ~/Downloads first"
+    exit 1
+fi
+
+OLD_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$APP_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4)
+NEW_VERSION=$(grep -o '"ideVersion": "[^"]*"' "$DOWNLOAD_DIR/resources/app/product.json" 2>/dev/null | cut -d'"' -f4)
+
+echo "Installed: v${OLD_VERSION:-unknown}"
+echo "Downloaded: v${NEW_VERSION:-unknown}"
+
+if [[ "$OLD_VERSION" == "$NEW_VERSION" ]]; then
+    echo "Already up to date."
+    [[ -d "$DOWNLOAD_DIR" ]] && rm -rf "$DOWNLOAD_DIR"
+    [[ -f "$TAR_FILE" ]] && rm -f "$TAR_FILE"
+    exit 0
+fi
+
+echo "Updating Antigravity to v$NEW_VERSION..."
+
+mkdir -p "$(dirname "$APP_DIR")"
+mkdir -p "$(dirname "$BIN_SYMLINK")"
+mkdir -p "$(dirname "$ICON_PATH")"
+mkdir -p "$(dirname "$DESKTOP_ENTRY")"
+
+[[ -d "$APP_DIR" ]] && rm -rf "$APP_DIR"
+if ! cp -r "$DOWNLOAD_DIR"/* "$INSTALL_DIR"/; then
+    echo "Error: Copying files failed"
+    exit 1
+fi
+chmod +x "$APP_DIR/antigravity"
+
+if [[ ! -L "$BIN_SYMLINK" ]] || [[ "$(readlink "$BIN_SYMLINK")" != "$APP_DIR/antigravity" ]]; then
+    ln -sf "$APP_DIR/antigravity" "$BIN_SYMLINK"
+    echo "Symlink updated: $BIN_SYMLINK -> $APP_DIR/antigravity"
+fi
+
+if [[ ! -f "$ICON_PATH" ]]; then
+    if [[ -f "$DOWNLOAD_DIR"/data/share/icons/hicolor/512x512/apps/antigravity.png ]]; then
+        cp "$DOWNLOAD_DIR"/data/share/icons/hicolor/512x512/apps/antigravity.png "$ICON_PATH"
+    elif [[ -f "$DOWNLOAD_DIR"/data/share/icons/antigravity.png ]]; then
+        cp "$DOWNLOAD_DIR"/data/share/icons/antigravity.png "$ICON_PATH"
+    fi
+fi
+
+if [[ ! -f "$DESKTOP_ENTRY" ]] || [[ "$(cat "$DESKTOP_ENTRY" 2>/dev/null)" != *"$APP_DIR/antigravity"* ]]; then
+    cat > "$DESKTOP_ENTRY" << EOF
+[Desktop Entry]
+Name=Antigravity
+Comment=AI-powered IDE
+Exec=$APP_DIR/antigravity
+Icon=$ICON_PATH
+Terminal=false
+Type=Application
+Categories=Development;IDE;
+EOF
+    update-desktop-database "$(dirname "$DESKTOP_ENTRY")" 2>/dev/null
+    echo "Desktop entry created/updated"
+fi
+
+rm -rf "$DOWNLOAD_DIR"
+[[ -f "$TAR_FILE" ]] && rm -f "$TAR_FILE"
+echo "Cleaned up Downloads"
+
+echo "Done! Antigravity updated to v$NEW_VERSION"
