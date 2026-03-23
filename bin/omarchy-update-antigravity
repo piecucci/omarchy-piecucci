@@ -141,7 +141,7 @@ if [[ ! -f "$ICON_PATH" ]]; then
     fi
 fi
 
-if [[ ! -f "$DESKTOP_ENTRY" ]] || [[ "$(cat "$DESKTOP_ENTRY" 2>/dev/null)" != *"$INSTALL_DIR/antigravity"* ]]; then
+if [[ ! -f "$DESKTOP_ENTRY" ]] || [[ "$(grep "^Exec=" "$DESKTOP_ENTRY" 2>/dev/null | cut -d= -f2-)" != "$INSTALL_DIR/antigravity" ]]; then
     cat > "$DESKTOP_ENTRY" << EOF
 [Desktop Entry]
 Name=Antigravity
