@@ -37,7 +37,7 @@ done
 
 get_latest_version() {
     local page_content
-    page_content=$(curl -sL "https://r.jina.ai/http://antigravity.google/download/linux" 2>/dev/null) || return 1
+    page_content=$(curl -sL "https://r.jina.ai/https://antigravity.google/download/linux" 2>/dev/null) || return 1
     
     local download_url
     download_url=$(echo "$page_content" | grep -oP 'https://edgedl\.me\.gvt1\.com/edgedl/release2/[^ ]*Antigravity\.tar\.gz' | head -1)
@@ -122,6 +122,7 @@ mkdir -p "$(dirname "$ICON_PATH")"
 mkdir -p "$(dirname "$DESKTOP_ENTRY")"
 
 [[ -d "$INSTALL_DIR" ]] && rm -rf "$INSTALL_DIR"
+mkdir -p "$INSTALL_DIR"
 if ! cp -r "$DOWNLOAD_DIR"/* "$INSTALL_DIR"/; then
     echo "Error: Copying files failed"
     exit 1
@@ -141,7 +142,7 @@ if [[ ! -f "$ICON_PATH" ]]; then
     fi
 fi
 
-if [[ ! -f "$DESKTOP_ENTRY" ]] || [[ "$(grep "^Exec=" "$DESKTOP_ENTRY" 2>/dev/null | cut -d= -f2-)" != "$INSTALL_DIR/antigravity" ]]; then
+if [[ ! -f "$DESKTOP_ENTRY" ]] || [[ "$(cat "$DESKTOP_ENTRY" 2>/dev/null)" != *"$INSTALL_DIR/antigravity"* ]]; then
     cat > "$DESKTOP_ENTRY" << EOF
 [Desktop Entry]
 Name=Antigravity
