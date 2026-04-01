@@ -1,0 +1,389 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.3.28",
+    "lastTouchedAt": "2026-03-30T23:27:45.271Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-03-30T16:46:36.246Z",
+    "lastRunVersion": "2026.3.28",
+    "lastRunCommand": "configure",
+    "lastRunMode": "local"
+  },
+  "update": {
+    "checkOnStart": true,
+    "auto": {
+      "enabled": true
+    }
+  },
+  "auth": {
+    "profiles": {
+      "google:default": {
+        "provider": "google",
+        "mode": "api_key"
+      },
+      "opencode:default": {
+        "provider": "opencode",
+        "mode": "api_key"
+      },
+      "opencode-go:default": {
+        "provider": "opencode-go",
+        "mode": "api_key"
+      },
+      "zai:default": {
+        "provider": "zai",
+        "mode": "api_key"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "zai": {
+        "baseUrl": "https://api.z.ai/api/paas/v4",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "glm-5",
+            "name": "GLM-5",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 1,
+              "output": 3.2,
+              "cacheRead": 0.2,
+              "cacheWrite": 0
+            },
+            "contextWindow": 202800,
+            "maxTokens": 131100
+          },
+          {
+            "id": "glm-5-turbo",
+            "name": "GLM-5 Turbo",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 1.2,
+              "output": 4,
+              "cacheRead": 0.24,
+              "cacheWrite": 0
+            },
+            "contextWindow": 202800,
+            "maxTokens": 131100
+          },
+          {
+            "id": "glm-4.7",
+            "name": "GLM-4.7",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.6,
+              "output": 2.2,
+              "cacheRead": 0.11,
+              "cacheWrite": 0
+            },
+            "contextWindow": 204800,
+            "maxTokens": 131072
+          },
+          {
+            "id": "glm-4.7-flash",
+            "name": "GLM-4.7 Flash",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.07,
+              "output": 0.4,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 131072
+          },
+          {
+            "id": "glm-4.7-flashx",
+            "name": "GLM-4.7 FlashX",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.06,
+              "output": 0.4,
+              "cacheRead": 0.01,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 128000
+          },
+          {
+            "id": "glm-4.6",
+            "name": "GLM-4.6",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.6,
+              "output": 2.2,
+              "cacheRead": 0.11,
+              "cacheWrite": 0
+            },
+            "contextWindow": 204800,
+            "maxTokens": 131072
+          },
+          {
+            "id": "glm-4.6v",
+            "name": "GLM-4.6V",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0.3,
+              "output": 0.9,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 32768
+          },
+          {
+            "id": "glm-4.5",
+            "name": "GLM-4.5",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.6,
+              "output": 2.2,
+              "cacheRead": 0.11,
+              "cacheWrite": 0
+            },
+            "contextWindow": 131072,
+            "maxTokens": 98304
+          },
+          {
+            "id": "glm-4.5-air",
+            "name": "GLM-4.5 Air",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0.2,
+              "output": 1.1,
+              "cacheRead": 0.03,
+              "cacheWrite": 0
+            },
+            "contextWindow": 131072,
+            "maxTokens": 98304
+          },
+          {
+            "id": "glm-4.5-flash",
+            "name": "GLM-4.5 Flash",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 131072,
+            "maxTokens": 98304
+          },
+          {
+            "id": "glm-4.5v",
+            "name": "GLM-4.5V",
+            "api": "openai-completions",
+            "reasoning": true,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0.6,
+              "output": 1.8,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 64000,
+            "maxTokens": 16384
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "opencode-go/kimi-k2.5",
+        "fallbacks": [
+          "opencode/minimax-m2.5-free",
+          "opencode/nemotron-3-super-free",
+          "opencode/mimo-v2-pro-free",
+          "opencode/mimo-v2-omni-free",
+          "google/gemini-3-flash-preview",
+          "zai/glm-5",
+          "opencode-go/glm-5",
+          "opencode-go/minimax-m2.5"
+        ]
+      },
+      "models": {
+        "opencode/minimax-m2.5-free": {},
+        "opencode/nemotron-3-super-free": {},
+        "opencode/mimo-v2-pro-free": {},
+        "opencode/mimo-v2-omni-free": {},
+        "google/gemini-3-flash-preview": {
+          "alias": "gemini-flash"
+        },
+        "zai/glm-5": {
+          "alias": "GLM"
+        },
+        "opencode-go/kimi-k2.5": {
+          "alias": "Kimi"
+        },
+        "opencode-go/glm-5": {
+          "alias": "GLM"
+        },
+        "opencode-go/minimax-m2.5": {
+          "alias": "MiniMax"
+        }
+      },
+      "workspace": "/home/mp/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "tools": {
+    "profile": "coding",
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "perplexity"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "session-memory": {
+          "enabled": true
+        },
+        "command-logger": {
+          "enabled": true
+        },
+        "bootstrap-extra-files": {
+          "enabled": true
+        },
+        "boot-md": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
+      "groups": {
+        "*": {
+          "requireMention": true
+        }
+      },
+      "groupPolicy": "allowlist",
+      "streaming": "partial"
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "controlUi": {
+      "allowedOrigins": [
+        "*"
+      ],
+      "allowInsecureAuth": true,
+      "dangerouslyDisableDeviceAuth": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "YOUR_GATEWAY_TOKEN_HERE",
+      "allowTailscale": true
+    },
+    "tailscale": {
+      "mode": "serve",
+      "resetOnExit": true
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "contacts.add",
+        "calendar.add",
+        "reminders.add",
+        "sms.send"
+      ]
+    }
+  },
+  "plugins": {
+    "entries": {
+      "duckduckgo": {
+        "enabled": true,
+        "config": {}
+      },
+      "perplexity": {
+        "enabled": true,
+        "config": {
+          "webSearch": {
+            "apiKey": "PASTE_YOUR_PPLX_API_KEY_HERE"
+          }
+        }
+      }
+    }
+  }
+}
