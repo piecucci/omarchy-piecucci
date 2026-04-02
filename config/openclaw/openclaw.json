@@ -1,7 +1,7 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.3.28",
-    "lastTouchedAt": "2026-03-30T23:27:45.271Z"
+    "lastTouchedVersion": "2026.3.31",
+    "lastTouchedAt": "2026-04-01T16:53:49.601Z"
   },
   "wizard": {
     "lastRunAt": "2026-03-30T16:46:36.246Z",
@@ -330,9 +330,8 @@
       "dmPolicy": "pairing",
       "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
       "groups": {
-        "*": {
-          "requireMention": true
-        }
+        "+RsMFelAMxJ8wM2I0": {},
+        "-1003783627386": {}
       },
       "groupPolicy": "allowlist",
       "streaming": "partial"
@@ -383,6 +382,9 @@
             "apiKey": "PASTE_YOUR_PPLX_API_KEY_HERE"
           }
         }
+      },
+      "device-pair": {
+        "enabled": true
       }
     }
   }

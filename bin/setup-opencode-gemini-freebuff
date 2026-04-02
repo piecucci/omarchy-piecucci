@@ -1,0 +1,30 @@
+#!/bin/bash
+# setup-opencode-gemini-freebuff.sh
+# Creates a tmux session with OpenCode, Gemini CLI, and Freebuff running side by side.
+
+SESSION="ai-coding"
+tmux kill-session -t $SESSION 2>/dev/null
+
+# Window 1: AI coding agents
+tmux new-session -d -s $SESSION -n 'agents'
+
+# Pane 0: OpenCode
+tmux send-keys -t "$SESSION" 'opencode' Enter
+
+# Pane 1: Gemini CLI
+tmux split-window -h -t "$SESSION"
+tmux send-keys -t "$SESSION" 'gemini' Enter
+
+# Pane 2: Freebuff
+tmux split-window -v -t "$SESSION"
+tmux send-keys -t "$SESSION" 'freebuff' Enter
+
+# Window 2: Ad-hoc shell
+tmux new-window -t $SESSION -n 'shell'
+tmux send-keys -t "$SESSION" 'cd ~/projects && echo "Ready"' Enter
+
+# Focus the agents window and first pane
+tmux select-window -t "$SESSION:agents"
+tmux select-pane -t 0
+
+echo "tmux session '$SESSION' created. Attach with: tmux attach -t $SESSION"

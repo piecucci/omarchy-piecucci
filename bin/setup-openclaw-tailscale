@@ -1,0 +1,31 @@
+#!/bin/bash
+# setup-openclaw-tailscale.sh
+# Creates a tmux session with OpenClaw gateway (auto Tailscale Serve),
+# tailscale status monitoring, and htop.
+
+SESSION="openclaw"
+tmux kill-session -t $SESSION 2>/dev/null
+
+# Window 1: Gateway + monitoring
+tmux new-session -d -s $SESSION -n 'gateway'
+
+# Pane 0: OpenClaw gateway (auto-starts tailscale serve via config)
+tmux send-keys -t "$SESSION" 'openclaw gateway' Enter
+
+# Pane 1: Tailscale status / logs
+tmux split-window -h -t "$SESSION"
+tmux send-keys -t "$SESSION" 'tailscale status && echo "---" && tailscale serve status' Enter
+
+# Pane 2: System monitoring
+tmux split-window -v -t "$SESSION"
+tmux send-keys -t "$SESSION" 'htop' Enter
+
+# Window 2: Ad-hoc shell
+tmux new-window -t $SESSION -n 'shell'
+tmux send-keys -t "$SESSION" 'cd ~/projects && echo "Ready"' Enter
+
+# Focus the gateway window and first pane
+tmux select-window -t "$SESSION:gateway"
+tmux select-pane -t 0
+
+echo "tmux session '$SESSION' created. Attach with: tmux attach -t $SESSION"
