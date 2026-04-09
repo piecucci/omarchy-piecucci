@@ -216,3 +216,4 @@ complete -c omarchy-webapp-remove -f
 complete -c omarchy-webapp-remove-all -f
 complete -c omarchy-wifi-powersave -f
 complete -c omarchy-windows-vm -f
+complete -c sudo
