@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+COMPLETIONS_FILE="$HOME/.config/fish/completions/omarchy.fish"
+COMMANDS_FILE="$HOME/.config/fish/omarchy_commands.txt"
+
+echo "Fetching omarchy commands..."
+compgen -c | grep -E '^omarchy-' | sort -u > "$COMMANDS_FILE"
+
+echo "Generating fish completions..."
+
+{
+    echo "# Auto-generated fish completions for omarchy commands"
+    echo "# Run this script after omarchy updates to regenerate"
+    echo ""
+    
+    while IFS= read -r cmd; do
+        echo "complete -c $cmd -f"
+    done < "$COMMANDS_FILE"
+} > "$COMPLETIONS_FILE"
+
+echo "Wrote $(wc -l < "$COMMANDS_FILE") commands to $COMPLETIONS_FILE"
