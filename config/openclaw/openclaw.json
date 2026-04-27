@@ -1,12 +1,12 @@
 {
   "meta": {
-    "lastTouchedVersion": "2026.3.31",
-    "lastTouchedAt": "2026-04-01T16:53:49.601Z"
+    "lastTouchedVersion": "2026.4.9",
+    "lastTouchedAt": "2026-04-09T08:59:16.122Z"
   },
   "wizard": {
-    "lastRunAt": "2026-03-30T16:46:36.246Z",
-    "lastRunVersion": "2026.3.28",
-    "lastRunCommand": "configure",
+    "lastRunAt": "2026-04-03T13:29:50.294Z",
+    "lastRunVersion": "2026.4.2",
+    "lastRunCommand": "doctor",
     "lastRunMode": "local"
   },
   "update": {
@@ -238,7 +238,7 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "opencode-go/kimi-k2.5",
+        "primary": "opencode-go/minimax-m2.7",
         "fallbacks": [
           "opencode/minimax-m2.5-free",
           "opencode/nemotron-3-super-free",
@@ -246,8 +246,13 @@
           "opencode/mimo-v2-omni-free",
           "google/gemini-3-flash-preview",
           "zai/glm-5",
+          "opencode-go/kimi-k2.5",
           "opencode-go/glm-5",
-          "opencode-go/minimax-m2.5"
+          "opencode-go/minimax-m2.5",
+          "google-antigravity/claude-opus-4-6-thinking",
+          "google-antigravity/gemini-3-flash",
+          "google-antigravity/gemini-3.1-pro-high",
+          "google-antigravity/gemini-3.1-pro-low"
         ]
       },
       "models": {
@@ -269,7 +274,12 @@
         },
         "opencode-go/minimax-m2.5": {
           "alias": "MiniMax"
-        }
+        },
+        "google-antigravity/claude-opus-4-6-thinking": {},
+        "google-antigravity/gemini-3-flash": {},
+        "google-antigravity/gemini-3.1-pro-high": {},
+        "google-antigravity/gemini-3.1-pro-low": {},
+        "opencode-go/minimax-m2.7": {}
       },
       "workspace": "/home/mp/.openclaw/workspace",
       "compaction": {
@@ -328,13 +338,22 @@
     "telegram": {
       "enabled": true,
       "dmPolicy": "pairing",
-      "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
+      "botToken": "REDACTED",
       "groups": {
         "+RsMFelAMxJ8wM2I0": {},
         "-1003783627386": {}
       },
       "groupPolicy": "allowlist",
-      "streaming": "partial"
+      "streaming": {
+        "mode": "partial"
+      }
+    },
+    "whatsapp": {
+      "dmPolicy": "pairing",
+      "allowFrom": [
+        "+447752142909"
+      ],
+      "enabled": true
     }
   },
   "gateway": {
@@ -350,7 +369,7 @@
     },
     "auth": {
       "mode": "token",
-      "token": "YOUR_GATEWAY_TOKEN_HERE",
+      "token": "REDACTED",
       "allowTailscale": true
     },
     "tailscale": {
@@ -379,11 +398,23 @@
         "enabled": true,
         "config": {
           "webSearch": {
-            "apiKey": "PASTE_YOUR_PPLX_API_KEY_HERE"
+            "apiKey": "REDACTED"
           }
         }
       },
       "device-pair": {
+        "enabled": true
+      },
+      "opencode-go": {
+        "enabled": true
+      },
+      "opencode": {
+        "enabled": true
+      },
+      "google": {
+        "enabled": true
+      },
+      "zai": {
         "enabled": true
       }
     }

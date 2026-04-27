@@ -9,8 +9,9 @@ tmux kill-session -t $SESSION 2>/dev/null
 # Window 1: Gateway + monitoring
 tmux new-session -d -s $SESSION -n 'gateway'
 
-# Pane 0: OpenClaw gateway (auto-starts tailscale serve via config)
-tmux send-keys -t "$SESSION" 'openclaw gateway' Enter
+# Pane 0: OpenClaw gateway
+# Explicitly start tailscale serve first to ensure it is served on magicdns immediately
+tmux send-keys -t "$SESSION" 'tailscale serve --bg --yes 18789 && openclaw gateway' Enter
 
 # Pane 1: Tailscale status / logs
 tmux split-window -h -t "$SESSION"
