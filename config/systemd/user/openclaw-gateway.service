@@ -1,13 +1,12 @@
 [Unit]
-Description=OpenClaw Gateway
+Description=OpenClaw Gateway (v2026.4.27)
 After=network-online.target
 Wants=network-online.target
 StartLimitBurst=5
 StartLimitIntervalSec=60
 
 [Service]
-ExecStartPre=-/usr/bin/tailscale serve --bg --yes 18789
-ExecStart=openclaw gateway --port 18789
+ExecStart=/home/mp/.local/share/mise/installs/node/25.2.1/bin/node /home/mp/.local/share/mise/installs/node/25.2.1/lib/node_modules/openclaw/dist/index.js gateway --port 18789
 Restart=always
 RestartSec=5
 RestartPreventExitStatus=78
@@ -17,11 +16,13 @@ SuccessExitStatus=0 143
 KillMode=control-group
 Environment=HOME=/home/mp
 Environment=TMPDIR=/tmp
+Environment=PATH=/home/mp/.local/share/mise/installs/node/25.2.1/bin:/home/mp/.local/bin:/home/mp/.npm-global/bin:/home/mp/bin:/home/mp/.nix-profile/bin:/home/mp/.local/share/pnpm:/usr/local/bin:/usr/bin:/bin:/home/mp/.volta/bin:/home/mp/.asdf/shims:/home/mp/.bun/bin:/home/mp/.nvm/current/bin:/home/mp/.local/share/fnm/aliases/default/bin:/home/mp/.local/share/fnm/current/bin:/home/mp/.fnm/aliases/default/bin:/home/mp/.fnm/current/bin
 Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment=OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service
 Environment="OPENCLAW_WINDOWS_TASK_NAME=OpenClaw Gateway"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
+Environment=OPENCLAW_SERVICE_VERSION=2026.4.27
 
 [Install]
 WantedBy=default.target

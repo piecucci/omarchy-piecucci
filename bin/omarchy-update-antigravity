@@ -11,7 +11,7 @@ BIN_SYMLINK="$HOME/.local/bin/antigravity"
 DESKTOP_ENTRY="$HOME/.local/share/applications/antigravity.desktop"
 ICON_PATH="$HOME/.local/share/icons/antigravity.png"
 
-AUTO_DOWNLOAD=false
+AUTO_DOWNLOAD=true
 
 usage() {
     echo "Usage: $0 [--download|-d]"

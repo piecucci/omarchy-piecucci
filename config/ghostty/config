@@ -2,7 +2,7 @@
 config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
 
 # Font
-font-family = "JetBrainsMono Nerd Font"
+font-family = "CaskaydiaMono Nerd Font"
 font-style = Regular
 font-size = 9
 
@@ -22,6 +22,9 @@ cursor-style-blink = false
 # (all shell integration options must be passed together)
 shell-integration-features = no-cursor,ssh-env
 
+# Shell
+command = /usr/bin/fish
+
 # Keyboard bindings
 keybind = shift+insert=paste_from_clipboard
 keybind = control+insert=copy_to_clipboard
@@ -32,3 +35,7 @@ keybind = super+control+shift+alt+arrow_right=resize_split:right,100
 
 # Slowdown mouse scrolling
 mouse-scroll-multiplier = 0.95
+keybind = shift+enter=text:\x1b\r
+
+# Fix general slowness on hyprland (https://github.com/ghostty-org/ghostty/discussions/3224)
+async-backend = epoll
